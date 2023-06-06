@@ -14,4 +14,11 @@ import PokeCards from "./components/PokeCards.vue";
   </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+</style>

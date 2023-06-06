@@ -1,11 +1,45 @@
 <script setup>
 import axios from "axios";
+import { ref, watch } from "vue";
 
-const response = await axios.get("https://pokeapi.co/api/v2/pokemon/");
+import PokeCard from "./PokeCard.vue";
 
-console.log(response);
+const pokemons = ref(null);
+const page = ref(0);
+const pageLimit = 12;
+
+const response = await axios.get("https://pokeapi.co/api/v2/pokemon/?limit=12");
+pokemons.value = response.data.results;
+
+watch(page, async () => {
+  const res = await axios.get(
+    `https://pokeapi.co/api/v2/pokemon/?limit=${pageLimit}&offset=${
+      page.value * pageLimit
+    }`
+  );
+  pokemons.value = res.data.results;
+});
 </script>
 
 <template>
-  <h2>PokeCards</h2>
+  <div class="container">
+    <h2>PokeCard</h2>
+    <div class="cards">
+      <PokeCard />
+    </div>
+    <div class="pagination">
+      <button @click="page -= 1">Prev</button>
+      <button @click="page += 1">Next</button>
+    </div>
+  </div>
 </template>
+
+<style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 50rem;
+}
+</style>
