@@ -1,12 +1,33 @@
 <script setup>
-const { name, image, types } = defineProps(["name", "image", "types"]);
+import axios from "axios";
+import { ref, onMounted } from "vue";
+
+const { name, url } = defineProps(["name", "url"]);
+
+const pokemon = ref(null);
+
+// async (url) => {
+//   const res = await axios.get(url);
+//   console.log(url);
+//   pokemon.value = res.data.results;
+// };
+
+const response = await axios.get(url);
+pokemon.value = response.data;
+
+console.log(pokemon);
 </script>
 
 <template>
   <div class="card">
     <h3>{{ name }}</h3>
-    <img :src="image" alt="" />
-    <span v-for="type in types">{{ type }}</span>
+    <img
+      :src="pokemon.sprites.other['official-artwork'].front_default"
+      :alt="name"
+    />
+    <p v-for="(type, index) in pokemon.types" :key="index">
+      {{ type.type.name }}
+    </p>
   </div>
 </template>
 
@@ -21,6 +42,6 @@ const { name, image, types } = defineProps(["name", "image", "types"]);
 }
 
 .card img {
-  height: 4rem;
+  height: 8rem;
 }
 </style>

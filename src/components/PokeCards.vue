@@ -8,7 +8,9 @@ const pokemons = ref(null);
 const page = ref(0);
 const pageLimit = 12;
 
-const response = await axios.get("https://pokeapi.co/api/v2/pokemon/?limit=12");
+const response = await axios.get(
+  `https://pokeapi.co/api/v2/pokemon/?limit=${pageLimit}`
+);
 pokemons.value = response.data.results;
 
 watch(page, async () => {
@@ -25,7 +27,11 @@ watch(page, async () => {
   <div class="container">
     <h2>PokeCard</h2>
     <div class="cards">
-      <PokeCard />
+      <PokeCard
+        v-for="(pkmn, index) in pokemons"
+        :name="pkmn.name"
+        :url="pkmn.url"
+      />
     </div>
     <div class="pagination">
       <button @click="page -= 1">Prev</button>
@@ -40,6 +46,12 @@ watch(page, async () => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  max-width: 50rem;
+  max-width: 55rem;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 </style>
