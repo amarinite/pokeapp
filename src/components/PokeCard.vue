@@ -1,21 +1,13 @@
 <script setup>
 import axios from "axios";
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 
 const { name, url } = defineProps(["name", "url"]);
 
 const pokemon = ref(null);
 
-// async (url) => {
-//   const res = await axios.get(url);
-//   console.log(url);
-//   pokemon.value = res.data.results;
-// };
-
 const response = await axios.get(url);
 pokemon.value = response.data;
-
-console.log(pokemon);
 </script>
 
 <template>
@@ -25,7 +17,7 @@ console.log(pokemon);
       :src="pokemon.sprites.other['official-artwork'].front_default"
       :alt="name"
     />
-    <p v-for="(type, index) in pokemon.types" :key="index">
+    <p v-for="(type, index) in pokemon.types">
       {{ type.type.name }}
     </p>
   </div>

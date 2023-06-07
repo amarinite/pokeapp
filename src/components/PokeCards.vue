@@ -5,6 +5,7 @@ import { ref, watch } from "vue";
 import PokeCard from "./PokeCard.vue";
 
 const pokemons = ref(null);
+const pokemon = ref(null);
 const page = ref(0);
 const pageLimit = 12;
 
@@ -28,6 +29,7 @@ watch(page, async () => {
     <h2>PokeCard</h2>
     <div class="cards">
       <PokeCard
+        :key="pkmn.name"
         v-for="(pkmn, index) in pokemons"
         :name="pkmn.name"
         :url="pkmn.url"
